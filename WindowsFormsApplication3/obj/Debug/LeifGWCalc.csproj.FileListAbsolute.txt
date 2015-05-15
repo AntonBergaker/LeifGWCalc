@@ -1,0 +1,16 @@
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.LeifGWCalc.resources
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\LeifGWCalc.Properties.Resources.resources
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csproj.GenerateResource.Cache
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\LeifGWCalc.pdb
+F:\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.config
+F:\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.manifest
+F:\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\LeifGWCalc.application
+F:\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe
+F:\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\LeifGWCalc.pdb
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application
+F:\WindowsFormsApplication3\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csprojResolveAssemblyReference.cache
+F:\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.config
+F:\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe
+F:\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.pdb
