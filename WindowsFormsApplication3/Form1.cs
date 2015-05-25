@@ -198,6 +198,8 @@ namespace WindowsFormsApplication3
                 returnBox.Height = 20+40; //make the box a bit bigger too fit his glory.
                 this.Size = new  Size(218,258+40);
             }
+        returnBox.BackColor = Color.White;
+        this.inputBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnter);
         }
 
 
@@ -302,6 +304,13 @@ namespace WindowsFormsApplication3
         private void returnBox_TextChanged(object sender, EventArgs e)
         {
 
+        }
+        private void CheckEnter(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                returnBox.BackColor = Color.Turquoise;
+            }
         }
 
     }
