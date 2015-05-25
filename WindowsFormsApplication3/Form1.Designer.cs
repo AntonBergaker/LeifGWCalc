@@ -71,6 +71,8 @@
             this.returnBox.ReadOnly = true;
             this.returnBox.Size = new System.Drawing.Size(174, 20);
             this.returnBox.TabIndex = 2;
+            this.returnBox.Text = "LeifGWCalc v1.1";
+            this.returnBox.TextChanged += new System.EventHandler(this.returnBox_TextChanged);
             // 
             // button1
             // 

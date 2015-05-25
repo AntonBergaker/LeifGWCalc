@@ -29,7 +29,7 @@ namespace WindowsFormsApplication3
             List<string> entries = new List<string>();
             for (int i = 0; i < input.Length; i++)
             {
-                if (input[i] == '+' || input[i] == '-' || input[i] == '/' || input[i] == '*') //check too see if the current char is a operator
+                if (input[i] == '+' || input[i] == '-' || input[i] == '/' || input[i] == '*' || input[i] == '^') //check too see if the current char is a operator
                 {   
                     if (before != "") //Check too see if something came before it, so we can find negative values
                     {
@@ -42,7 +42,7 @@ namespace WindowsFormsApplication3
                     {
                         if (entries.Count != 0 && input[i] == '-') //if there's no numbers ahead of it might be a negative value
                         {
-                            if (entries[entries.Count - 1] == "/" || entries[entries.Count - 1] == "*") //see if the negative had a * or / ahead of it.
+                            if (entries[entries.Count - 1] == "/" || entries[entries.Count - 1] == "*" || entries[entries.Count - 1] == "^") //see if the negative had a * or / ahead of it.
                             {
                                 nextisnegative = "-";
                             }
@@ -80,12 +80,12 @@ namespace WindowsFormsApplication3
             if (entries.Count % 2 == 0) //if there are as many operators as numbers throw an error
             { error = true; }
 
-            decimal numbers;
+            double numbers;
             if (error == false) //if no errors so far, check if number blocks doesn't contain other than numbers
             {
                 for (int i = 0; i < entries.Count; i+=2)
                 {
-                    if (Decimal.TryParse(entries[i], out numbers) == false)
+                    if (Double.TryParse(entries[i], out numbers) == false)
                     { error = true; }
                 }
             }
@@ -96,36 +96,44 @@ namespace WindowsFormsApplication3
                 //find the operators in the right order. When an operator is detected run both entries to it's sides with the operator
                 while (entries.Count > 1) //keep doing this until there is only one number remaining
                 {
-                    if (entries.Contains("/")) //first look for dividing because of the order of operations
+                    if (entries.Contains("^")) //first look for power off because of the order of operations
                     {
-                        index = entries.FindIndex(item => item == "/"); //find the divodors index
-                        entries[index - 1] = Convert.ToString(Convert.ToDecimal(entries[index - 1]) / Convert.ToDecimal(entries[index + 1])); //perform dividing operation
+                        index = entries.FindIndex(item => item == "^"); //find the dividors index
+                        entries[index - 1] = Convert.ToString(Math.Pow(Convert.ToDouble(entries[index - 1]), Convert.ToDouble(entries[index + 1]))); //perform dividing operation
                         entries.RemoveAt(index); //remove the old entries and replace one of the old with this brand new one that has been calculated
                         entries.RemoveAt(index);
                     }
-                    else if (entries.Contains("*")) //do the same for multiplication
+                    else if (entries.Contains("/")) //do the same for division
+                    {
+                        index = entries.FindIndex(item => item == "/");
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) / Convert.ToDouble(entries[index + 1]));
+                        entries.RemoveAt(index);
+                        entries.RemoveAt(index);
+                    }
+                    else if (entries.Contains("*"))
                     {
                         index = entries.FindIndex(item => item == "*");
-                        entries[index - 1] = Convert.ToString(Convert.ToDecimal(entries[index - 1]) * Convert.ToDecimal(entries[index + 1]));
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) * Convert.ToDouble(entries[index + 1]));
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
                     else if (entries.Contains("+"))
                     {
                         index = entries.FindIndex(item => item == "+");
-                        entries[index - 1] = Convert.ToString(Convert.ToDecimal(entries[index - 1]) + Convert.ToDecimal(entries[index + 1]));
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) + Convert.ToDouble(entries[index + 1]));
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
                     else if (entries.Contains("-"))
                     {
                         index = entries.FindIndex(item => item == "-");
-                        entries[index - 1] = Convert.ToString(Convert.ToDecimal(entries[index - 1]) - Convert.ToDecimal(entries[index + 1]));
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) - Convert.ToDouble(entries[index + 1]));
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
                 }
-
+                if (entries[0] == "Infinity") //Give a snarky response if you are mathing too hard.
+                { entries[0] = "Great, you broke it. Think smaller."; }
                 returnBox.Text = entries[0]; //Output the only remaining entry
                 returnBox.Height = 20;
                 this.Size = new Size(218, 258);
@@ -289,6 +297,11 @@ namespace WindowsFormsApplication3
             inputBox.Text = "";
             this.ActiveControl = inputBox;
             inputBox.Select(inputBox.Text.Length, inputBox.Text.Length);
+        }
+
+        private void returnBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
     }
