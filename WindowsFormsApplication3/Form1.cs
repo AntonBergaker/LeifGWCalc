@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -88,7 +89,7 @@ namespace WindowsFormsApplication3
             } while (repeat == true);
 
 
-            if (mathback == "Infinity") //Give a snarky response if you are mathing too hard.
+            if (mathback == "Infinity" || mathback == "INF") //Give a snarky response if you are mathing too hard.
             { mathback = "Great, you broke it. Think smaller."; }
             else if (mathback == "error")
             {
@@ -104,6 +105,11 @@ namespace WindowsFormsApplication3
         }
         private string MathDo(string inputstring)
         {
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ".";
+            NumberStyles style = new NumberStyles();
+            style = NumberStyles.AllowDecimalPoint;
+
             char[] input;
             input = inputstring.ToCharArray();
             string before = "";
@@ -128,7 +134,7 @@ namespace WindowsFormsApplication3
                     {
                         if (entries.Count != 0 && input[i] == '-') //if there's no numbers ahead of it might be a negative value
                         {
-                            if (entries[entries.Count - 1] == "/" || entries[entries.Count - 1] == "*" || entries[entries.Count - 1] == "^") //see if the negative had a * or / ahead of it.
+                            if (entries[entries.Count - 1] == "/" || entries[entries.Count - 1] == "*" || entries[entries.Count - 1] == "^") //see if the negative had a *, ^ or / ahead of it.
                             {
                                 nextisnegative = "-";
                             }
@@ -171,13 +177,14 @@ namespace WindowsFormsApplication3
             {
                 for (int i = 0; i < entries.Count; i+=2)
                 {
-                    if (Double.TryParse(entries[i], out numbers) == false)
+                    if (Double.TryParse(entries[i], style, provider, out numbers) == false)
                     { error = true; }
                 }
             }
 
             if (error == false) //if no errors, start counting
             {
+
                 int index;
                 //find the operators in the right order. When an operator is detected run both entries to it's sides with the operator
                 while (entries.Count > 1) //keep doing this until there is only one number remaining
@@ -185,35 +192,35 @@ namespace WindowsFormsApplication3
                     if (entries.Contains("^")) //first look for power off because of the order of operations
                     {
                         index = entries.FindIndex(item => item == "^"); //find the dividors index
-                        entries[index - 1] = Convert.ToString(Math.Pow(Convert.ToDouble(entries[index - 1]), Convert.ToDouble(entries[index + 1]))); //perform dividing operation
+                        entries[index - 1] = Convert.ToString(Math.Pow(Convert.ToDouble(entries[index - 1], provider), Convert.ToDouble(entries[index + 1], provider))); //perform dividing operation
                         entries.RemoveAt(index); //remove the old entries and replace one of the old with this brand new one that has been calculated
                         entries.RemoveAt(index);
                     }
                     else if (entries.Contains("/")) //do the same for division
                     {
                         index = entries.FindIndex(item => item == "/");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) / Convert.ToDouble(entries[index + 1]));
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1],provider) / Convert.ToDouble(entries[index + 1],provider));
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
                     else if (entries.Contains("*"))
                     {
                         index = entries.FindIndex(item => item == "*");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) * Convert.ToDouble(entries[index + 1]));
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1],provider) * Convert.ToDouble(entries[index + 1],provider));
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
                     else if (entries.Contains("+"))
                     {
                         index = entries.FindIndex(item => item == "+");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) + Convert.ToDouble(entries[index + 1]));
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) + Convert.ToDouble(entries[index + 1], provider));
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
                     else if (entries.Contains("-"))
                     {
                         index = entries.FindIndex(item => item == "-");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1]) - Convert.ToDouble(entries[index + 1]));
+                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) - Convert.ToDouble(entries[index + 1], provider));
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }

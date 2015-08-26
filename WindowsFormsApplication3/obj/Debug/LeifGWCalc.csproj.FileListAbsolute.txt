@@ -53,3 +53,16 @@ C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\Leif
 C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csproj.GenerateResource.Cache
 C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
 C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application
+D:\Program\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.config
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.pdb
+D:\Program\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.manifest
+D:\Program\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.application
+D:\Program\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csprojResolveAssemblyReference.cache
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.LeifGWCalc.resources
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.Properties.Resources.resources
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csproj.GenerateResource.Cache
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
+D:\Program\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application
+D:\Program\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.pdb
