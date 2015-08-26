@@ -16,10 +16,96 @@ namespace WindowsFormsApplication3
         {
             InitializeComponent();
         }
+
         private void inputBox_TextChanged(object sender, EventArgs e)
         {
+            string mathback = "";
+            bool repeat = true;
+
+            string maininput = (inputBox.Text);
+            int parstart;
+            int parend;
+            string mathtosend;
+            do
+            {
+                //MessageBox.Show(maininput);
+                //find that parenthesis to send to MathDo
+                char[] maininputchar;
+                maininputchar = maininput.ToCharArray();
+                parstart = -1;
+                parend = -1;
+                mathtosend = "";
+                for (int i = 0; maininputchar.Length > i; i++)  {
+                    if (maininputchar[i] == '(')
+                    { parstart = i; }
+                    else if (maininputchar[i] == ')')    {
+                        if (parstart >= 0)
+                            {
+                            parend = i;
+                            i = 9999;
+                            for (var ii = parstart+1; (ii) <= (parend-1); ii++)
+                                {
+                                mathtosend += maininputchar[ii]; 
+                            }
+                            }
+                        else
+                            {
+                            i = 9999;
+                            mathtosend = "error";
+                        }
+                    }
+                }
+                if (mathtosend == "")
+                    {
+                        if (parstart == -1 && parend == -1)
+                        {
+                            mathtosend = new string(maininputchar);
+                            repeat = false;
+                        }
+                        else
+                        {
+                            mathtosend = "error";
+                        }
+                    }
+                if (mathtosend != "error" && mathtosend != "Infinity")
+                {
+                    mathback = MathDo(mathtosend);
+                    if (parstart >= 0 && parend >= 0)
+                    {
+                        maininput = maininput.Remove(parstart, parend-parstart+1);
+                        maininput = maininput.Insert(parstart, mathback);
+                    }
+                    else
+                    {
+                        maininput = mathback;
+                        repeat = false;
+                    }
+                }
+                else  {
+                    mathback = mathtosend;
+                    repeat = false;
+                }
+            } while (repeat == true);
+
+
+            if (mathback == "Infinity") //Give a snarky response if you are mathing too hard.
+            { mathback = "Great, you broke it. Think smaller."; }
+            else if (mathback == "error")
+            {
+                mathback = '"' + gwreturn() + '"';
+                returnBox.Height = 20 + 40; //make the box a bit bigger too fit his glory.
+                this.Size = new Size(218, 258 + 40);
+            }
+            else {
+                returnBox.Height = 20;
+                this.Size = new Size(218, 258);
+            }
+            returnBox.Text = mathback; //Output the only remaining entry
+        }
+        private string MathDo(string inputstring)
+        {
             char[] input;
-            input = inputBox.Text.ToCharArray();
+            input = inputstring.ToCharArray();
             string before = "";
             bool error = false;
             string nextisnegative = "";
@@ -61,7 +147,7 @@ namespace WindowsFormsApplication3
                 else
                 {
                     if (input[i] == ',') //Convert commas to periods
-                        {input[i] = '.'; }
+                    { input[i] = '.'; }
                     before += input[i];
                 }
 
@@ -132,77 +218,70 @@ namespace WindowsFormsApplication3
                         entries.RemoveAt(index);
                     }
                 }
-                if (entries[0] == "Infinity") //Give a snarky response if you are mathing too hard.
-                { entries[0] = "Great, you broke it. Think smaller."; }
-                returnBox.Text = entries[0]; //Output the only remaining entry
-                returnBox.Height = 20;
-                this.Size = new Size(218, 258);
+                return Convert.ToString(entries[0]);
             }
             else
             {
-                //enter citat from our lord and saviour Leif Gw Persson if there is an error.
-                Random rnd1 = new Random();
-                int random = rnd1.Next(0, 14);
-                string citat = "";
-                switch (random)
-                {
-                    case 0:
-                        citat = "Mitt yngsta barnbarn är rödfnasigt och ser ut some en ung Winston Churchhill. Minus cigarren.";
-                        break;
-                    case 1:
-                        citat = "Du har väldigt bastanta små händer. Har du tänkt på det?";
-                        break;
-                    case 2:
-                        citat = "Till skillnad från dig så har jag faktiskt gått igenom de där handlingarna, så jag är inte lika imponerad.";
-                        break;
-                    case 3:
-                        citat = "Det finns riktigt bra hembränt på några ställen och det brukar jag då inte tacka nej till.";
-                        break;
-                    case 4:
-                        citat = "Gustav Fridolin är en orm.";
-                        break;
-                    case 5:
-                        citat = "Det är inte bra att ge kommunisterna allt de pekar på.";
-                        break;
-                    case 6:
-                        citat = "Jag går på korgen och får massa idéer. Ju fullare desto bättre idéer.";
-                        break;
-                    case 7:
-                        citat = "Det är ganska trevligt att vara populär.";
-                        break;
-                    case 8:
-                        citat = "Jag betalar åtminstånde ett par daghem varje år på mina skatter.";
-                        break;
-                    case 9:
-                        citat = "En gång var det en tomte som gjorde en ändring utan att fråga. Honom blev jag galen på.";
-                        break;
-                    case 10:
-                        citat = "Om jag äter sill kan jag ta en öl. Men bara några klunkar för att skölja ner vodkan.";
-                        break;
-                    case 11:
-                        citat = "Andra författare väljer platser där de själva har bott. De lata jävlarna. De behöver inte göra sin research.";
-                        break;
-                    case 12:
-                        citat = "Jag hade fel om Fridolin.";
-                        break;
-                    case 13:
-                        citat = "Polisens mordvapenarkiv, det är ett sånt ställe jag skulle kunna åldras och då på.";
-                        break;
-                    case 14:
-                        citat = "Mamma tog mina aktier.";
-                        break;
-                }
-
-
-                returnBox.Text = '"' +citat + '"';
-                returnBox.Height = 20+40; //make the box a bit bigger too fit his glory.
-                this.Size = new  Size(218,258+40);
+                return "error";
             }
-        returnBox.BackColor = Color.White;
-        this.inputBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnter);
         }
 
-
+        private string gwreturn()
+        {
+            //enter citat from our lord and saviour Leif Gw Persson if there is an error.
+            Random rnd1 = new Random();
+            int random = rnd1.Next(0, 14);
+            string citat = "";
+            switch (random)
+            {
+                case 0:
+                    citat = "Mitt yngsta barnbarn är rödfnasigt och ser ut some en ung Winston Churchhill. Minus cigarren.";
+                    break;
+                case 1:
+                    citat = "Du har väldigt bastanta små händer. Har du tänkt på det?";
+                    break;
+                case 2:
+                    citat = "Till skillnad från dig så har jag faktiskt gått igenom de där handlingarna, så jag är inte lika imponerad.";
+                    break;
+                case 3:
+                    citat = "Det finns riktigt bra hembränt på några ställen och det brukar jag då inte tacka nej till.";
+                    break;
+                case 4:
+                    citat = "Gustav Fridolin är en orm.";
+                    break;
+                case 5:
+                    citat = "Det är inte bra att ge kommunisterna allt de pekar på.";
+                    break;
+                case 6:
+                    citat = "Jag går på korgen och får massa idéer. Ju fullare desto bättre idéer.";
+                    break;
+                case 7:
+                    citat = "Det är ganska trevligt att vara populär.";
+                    break;
+                case 8:
+                    citat = "Jag betalar åtminstånde ett par daghem varje år på mina skatter.";
+                    break;
+                case 9:
+                    citat = "En gång var det en tomte som gjorde en ändring utan att fråga. Honom blev jag galen på.";
+                    break;
+                case 10:
+                    citat = "Om jag äter sill kan jag ta en öl. Men bara några klunkar för att skölja ner vodkan.";
+                    break;
+                case 11:
+                    citat = "Andra författare väljer platser där de själva har bott. De lata jävlarna. De behöver inte göra sin research.";
+                    break;
+                case 12:
+                    citat = "Jag hade fel om Fridolin.";
+                    break;
+                case 13:
+                    citat = "Polisens mordvapenarkiv, det är ett sånt ställe jag skulle kunna åldras och då på.";
+                    break;
+                case 14:
+                    citat = "Mamma tog mina aktier.";
+                    break;
+            }
+            return citat;
+        }
 
         private void button_Click(Button button) //when pressing a button, add the buttons text too the equation, and select the window again
         {

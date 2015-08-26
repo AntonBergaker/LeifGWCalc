@@ -40,3 +40,16 @@ D:\Onödiga Grejer\Spel\C# LEARNING\LeifGWCalc\LeifGWCalc\WindowsFormsApplicatio
 D:\Onödiga Grejer\Spel\C# LEARNING\LeifGWCalc\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csproj.GenerateResource.Cache
 D:\Onödiga Grejer\Spel\C# LEARNING\LeifGWCalc\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
 D:\Onödiga Grejer\Spel\C# LEARNING\LeifGWCalc\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.config
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.pdb
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.manifest
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\bin\Debug\LeifGWCalc.application
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\bin\Debug\LeifGWCalc.pdb
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csprojResolveAssemblyReference.cache
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.LeifGWCalc.resources
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.Properties.Resources.resources
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csproj.GenerateResource.Cache
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
+C:\Users\Anton\Desktop\LeifGWCalc-master\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application
