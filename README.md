@@ -1,6 +1,8 @@
 # LeifGWCalc
-Calculator made for school that uses order of operations.
 
-Might have done more features than intended. Would still like to unclude brackets, but not sure how to implement that without rewriting everything done so far.
+Calculator made for school that uses brackets, order of operations and is able to do trigenometri.
+Easy and small too use.
+
+This project was a quick mockup for school. We were given the tasks of making a simple calculator(like 4 operator buttons and two inputs). I did a bit more.
 
 Includes quotes from our lord and saviour Leif GW Persson.
