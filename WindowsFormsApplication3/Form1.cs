@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Globalization;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +17,57 @@ namespace WindowsFormsApplication3
         public LeifGWCalc()
         {
             InitializeComponent();
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc\data.txt";
+            if (File.Exists(appdata))
+            {
+                string text = File.ReadAllText(appdata);
+                if (text != "")
+                {
+                    if (text[0] == '<')
+                    {
+                        button18.Text = "<";
+                        this.MaximumSize = new System.Drawing.Size(322, this.Height);
+                        this.Size = new System.Drawing.Size(322, this.Height);
+                        button_cos.Visible = true;
+                        button_sin.Visible = true;
+                        button_tan.Visible = true;
+                        button_leftpar.Visible = true;
+                        button_rightpar.Visible = true;
+                        button_power.Visible = true;
+                        button_degrees.Visible = true;
+                    }
+
+                    text = text.Remove(0, 1);
+                    button_degrees.Text = text;
+                }
+            }
+            else
+            { File.WriteAllText(appdata, ""); }
         }
 
-        private void inputBox_TextChanged(object sender, EventArgs e)
+        public void inputBox_TextChanged(object sender, EventArgs e)
         {
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ".";
+            provider.NegativeSign = "-";
+            NumberStyles style = new NumberStyles();
+            style = NumberStyles.Any;
+
             string mathback = "";
             bool repeat = true;
 
             string maininput = (inputBox.Text);
+
+            //clean the input
+
+            //cleanup invalid signs and replace with valid
+            maininput = maininput.Replace(",",".");
+            maininput = maininput.Replace("x", "*");
+            maininput = maininput.Replace(" ", "");
+            maininput = maininput.ToLower();
+
+
+
             int parstart;
             int parend;
             string mathtosend;
@@ -36,27 +80,27 @@ namespace WindowsFormsApplication3
                 parstart = -1;
                 parend = -1;
                 mathtosend = "";
-                for (int i = 0; maininputchar.Length > i; i++)  {
-                    if (maininputchar[i] == '(')
+                for (int i = 0; maininputchar.Length > i; i++)  { //look for beginning parenthasis
+                    if (maininputchar[i] == '(') //if found set it as active
                     { parstart = i; }
-                    else if (maininputchar[i] == ')')    {
+                    else if (maininputchar[i] == ')')    { //if a ) is found it mean parenthasis over(duh) but with this setup it will always grab the right one furthest in
                         if (parstart >= 0)
                             {
                             parend = i;
                             i = 9999;
-                            for (var ii = parstart+1; (ii) <= (parend-1); ii++)
+                            for (var ii = parstart+1; (ii) <= (parend-1); ii++) //insert the par into the part to send to MathDo
                                 {
                                 mathtosend += maininputchar[ii]; 
+                                }
                             }
-                            }
-                        else
+                        else //invalid number of ) means error
                             {
                             i = 9999;
                             mathtosend = "error";
                         }
                     }
                 }
-                if (mathtosend == "")
+                if (mathtosend == "") //no paranthesis found or empty string
                     {
                         if (parstart == -1 && parend == -1)
                         {
@@ -65,15 +109,74 @@ namespace WindowsFormsApplication3
                         }
                         else
                         {
-                            mathtosend = "error";
+                            mathtosend = "error"; //honestly this always triggers
                         }
                     }
                 if (mathtosend != "error" && mathtosend != "Infinity")
                 {
                     mathback = MathDo(mathtosend);
-                    if (parstart >= 0 && parend >= 0)
+                    if (parstart >= 0 && parend >= 0) //if the return stiring was a () do some extra fun
                     {
-                        maininput = maininput.Remove(parstart, parend-parstart+1);
+                        if (parstart >= 3)
+                        {
+                            bool didoperation = false;
+                            double var_modifier;
+                            if (button_degrees.Text == "Degrees")
+                            { var_modifier = Math.PI / 180; }
+                            else
+                            {   var_modifier = 1;}
+                            //check if it was a sin/tan/cos paranthesis
+                            if (maininput[parstart - 3] == 's' && maininput[parstart - 2] == 'i' && maininput[parstart - 1] == 'n') //sin
+                            {
+                                mathback = Convert.ToString(Math.Sin(Convert.ToDouble(mathback, provider) * var_modifier));
+                                didoperation = true;
+                            }
+                            else if (maininput[parstart - 3] == 'c' && maininput[parstart - 2] == 'o' && maininput[parstart - 1] == 's') //cos
+                            {
+                                mathback = Convert.ToString(Math.Cos(Convert.ToDouble(mathback, provider) * var_modifier));
+                                didoperation = true;
+                            }
+                            else if (maininput[parstart - 3] == 't' && maininput[parstart - 2] == 'a' && maininput[parstart - 1] == 'n') //tan
+                            {
+                                mathback = Convert.ToString(Math.Tan(Convert.ToDouble(mathback, provider) * var_modifier));
+                                didoperation = true;
+                            }
+                        if (didoperation == true)
+                        {
+                            if (parstart >= 4)
+                            {
+                                if (isnumber(maininput[parstart-4]) == true)
+                                {
+                                    maininput = maininput.Insert(parstart - 3, "*");
+                                    parend++;
+                                    parstart++;
+                                }
+                            }
+
+                            parstart -= 3;
+                            }
+                        }
+                        if (parend >= 0 && parend < (maininput.Length-1)) //if operation was done with )( aka multiplication with paranthesis
+                        {
+                            if (maininput[parend + 1] == '(')
+                            {
+                                maininput = maininput.Insert(parend+1, "*");
+                            }
+                            else if (isnumber(maininput[parend + 1]) == true)
+                            {
+                                maininput = maininput.Insert(parend + 1, "*");
+                            }
+                        }
+                        if (parstart >= 1)
+                        {
+                            if (isnumber(maininput[parstart - 1]) == true)
+                            {
+                                maininput = maininput.Insert(parstart, "*");
+                                parstart++;
+                                parend++;
+                            }
+                        }
+                        maininput = maininput.Remove(parstart, 1+parend-parstart);
                         maininput = maininput.Insert(parstart, mathback);
                     }
                     else
@@ -95,11 +198,15 @@ namespace WindowsFormsApplication3
             {
                 mathback = '"' + gwreturn() + '"';
                 returnBox.Height = 20 + 40; //make the box a bit bigger too fit his glory.
-                this.Size = new Size(218, 258 + 40);
+                this.MaximumSize = new Size(this.Width, 258 + 40);
+                this.MinimumSize = new Size(this.Width, 258 + 40);
+                this.Size = new Size(this.Width, 258 + 40);
             }
             else {
                 returnBox.Height = 20;
-                this.Size = new Size(218, 258);
+                this.MaximumSize = new Size(this.Width, 258);
+                this.MinimumSize = new Size(this.Width, 258);
+                this.Size = new Size(this.Width, 258);
             }
             returnBox.Text = mathback; //Output the only remaining entry
         }
@@ -107,8 +214,9 @@ namespace WindowsFormsApplication3
         {
             NumberFormatInfo provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ".";
+            provider.NegativeSign = "-";
             NumberStyles style = new NumberStyles();
-            style = NumberStyles.AllowDecimalPoint;
+            style = NumberStyles.Any;
 
             char[] input;
             input = inputstring.ToCharArray();
@@ -132,7 +240,7 @@ namespace WindowsFormsApplication3
                     }
                     else
                     {
-                        if (entries.Count != 0 && input[i] == '-') //if there's no numbers ahead of it might be a negative value
+                        if (entries.Count >= 1 && input[i] == '-') //if there's no numbers ahead of it it might be a negative value
                         {
                             if (entries[entries.Count - 1] == "/" || entries[entries.Count - 1] == "*" || entries[entries.Count - 1] == "^") //see if the negative had a *, ^ or / ahead of it.
                             {
@@ -152,8 +260,6 @@ namespace WindowsFormsApplication3
                 }
                 else
                 {
-                    if (input[i] == ',') //Convert commas to periods
-                    { input[i] = '.'; }
                     before += input[i];
                 }
 
@@ -237,7 +343,7 @@ namespace WindowsFormsApplication3
         {
             //enter citat from our lord and saviour Leif Gw Persson if there is an error.
             Random rnd1 = new Random();
-            int random = rnd1.Next(0, 14);
+            int random = rnd1.Next(0, 21);
             string citat = "";
             switch (random)
             {
@@ -254,13 +360,13 @@ namespace WindowsFormsApplication3
                     citat = "Det finns riktigt bra hembränt på några ställen och det brukar jag då inte tacka nej till.";
                     break;
                 case 4:
-                    citat = "Gustav Fridolin är en orm.";
+                    citat = "Jakt är en jävla udda sysselsättning - att hålla på och skjuta på djur. Ett utmärkt sätt att förhärda en människa på.";
                     break;
                 case 5:
                     citat = "Det är inte bra att ge kommunisterna allt de pekar på.";
                     break;
                 case 6:
-                    citat = "Jag går på korgen och får massa idéer. Ju fullare desto bättre idéer.";
+                    citat = "Jag går på krogen och får massa idéer. Ju fullare desto bättre idéer.";
                     break;
                 case 7:
                     citat = "Det är ganska trevligt att vara populär.";
@@ -286,15 +392,50 @@ namespace WindowsFormsApplication3
                 case 14:
                     citat = "Mamma tog mina aktier.";
                     break;
+                case 15:
+                    citat = "Paradise Hotel. Det är ett antal ungdomspsykopater som för säkerhets skull är på fyllan.";
+                    break;
+                case 16:
+                    citat ="Jag är ju ganska gammal och behöver tid att tänka. Så jag har den här framtoningen för att ge mig själv mer tid";
+                    break;
+                case 17:
+                    citat = "Ge barnen pengar och säg åt dem att inte dränka sig själva.";
+                    break;
+                case 18:
+                    citat = "Normalt hoppar jag omkring. Men då är jag noga med att bara mina närmaste kan se mig.";
+                    break;
+                case 19:
+                    citat = "Jag vet inte varför mina böcker säljer så dåligt i Norge. För lite bilder eller för små bokstäver kanske.";
+                    break;
+                case 20:
+                    citat = "Om jag har blivit inbjuden till Nobelfesten? Ja, men jag tror inte jag har svarat. Den där inbjudan ligger någonstans.";
+                    break;
+                case 21:
+                    citat = "Jag har kallat folk för massa fula saker. Men inget som jag ångrar direkt, det vill jag inte påstå.";
+                    break;
             }
             return citat;
         }
 
         private void button_Click(Button button) //when pressing a button, add the buttons text too the equation, and select the window again
+            {
+            inputBox.Text+=button.Text;
+            this.ActiveControl = inputBox;
+            inputBox.Select(inputBox.Text.Length, inputBox.Text.Length);
+            }
+        private void button_Click(string addText)
         {
-        inputBox.Text+=button.Text;
-        this.ActiveControl = inputBox;
-        inputBox.Select(inputBox.Text.Length, inputBox.Text.Length);
+            inputBox.Text += addText;
+            this.ActiveControl = inputBox;
+            inputBox.Select(inputBox.Text.Length, inputBox.Text.Length);
+        }
+
+        private bool isnumber(char c)
+        {
+            if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9')
+            { return true; }
+            else
+            { return false; }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -398,6 +539,83 @@ namespace WindowsFormsApplication3
                 returnBox.BackColor = Color.Turquoise;
             }
         }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            if (button18.Text == "<")
+            {
+                button18.Text = ">";
+                this.MaximumSize = new System.Drawing.Size(218, this.Height);
+                this.Size = new System.Drawing.Size(218, this.Height);
+                button_cos.Visible = false;
+                button_sin.Visible = false;
+                button_tan.Visible = false;
+                button_leftpar.Visible = false;
+                button_rightpar.Visible = false;
+                button_power.Visible = false;
+                button_degrees.Visible = false;
+            }
+            else
+            {
+                button18.Text = "<";
+                this.MaximumSize = new System.Drawing.Size(322, this.Height);
+                this.Size = new System.Drawing.Size(322, this.Height);
+                button_cos.Visible = true;
+                button_sin.Visible = true;
+                button_tan.Visible = true;
+                button_leftpar.Visible = true;
+                button_rightpar.Visible = true;
+                button_power.Visible = true;
+                button_degrees.Visible = true;
+            }
+        }
+
+        private void button_sin_Click(object sender, EventArgs e)
+        {
+            button_Click("sin(");
+        }
+
+        private void button_leftpar_Click(object sender, EventArgs e)
+        {
+            button_Click(button_leftpar);
+        }
+
+        private void button_rightpar_Click(object sender, EventArgs e)
+        {
+            button_Click(button_rightpar);
+        }
+
+        private void button_power_Click(object sender, EventArgs e)
+        {
+            button_Click(button_power);
+        }
+
+        private void button_cos_Click(object sender, EventArgs e)
+        {
+            button_Click("cos(");
+        }
+
+        private void button_tan_Click(object sender, EventArgs e)
+        {
+            button_Click("tan(");
+        }
+
+        private void button_degrees_Click(object sender, EventArgs e)
+        {
+            if (button_degrees.Text == "Degrees")
+            { button_degrees.Text = "Radians";}
+            else
+            { button_degrees.Text = "Degrees"; }
+            inputBox_TextChanged(inputBox,e);
+        }
+
+        private void LeifGWCalc_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            string text = button18.Text + button_degrees.Text;
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc\data.txt";
+            File.WriteAllText(appdata, text);
+        }
+
 
     }
 }

@@ -48,6 +48,14 @@
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button_sin = new System.Windows.Forms.Button();
+            this.button_cos = new System.Windows.Forms.Button();
+            this.button_tan = new System.Windows.Forms.Button();
+            this.button_leftpar = new System.Windows.Forms.Button();
+            this.button_rightpar = new System.Windows.Forms.Button();
+            this.button_power = new System.Windows.Forms.Button();
+            this.button_degrees = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputBox
@@ -65,11 +73,11 @@
             this.returnBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.returnBox.Location = new System.Drawing.Point(13, 188);
-            this.returnBox.MaximumSize = new System.Drawing.Size(174, 60);
+            this.returnBox.MaximumSize = new System.Drawing.Size(400, 60);
             this.returnBox.Multiline = true;
             this.returnBox.Name = "returnBox";
             this.returnBox.ReadOnly = true;
-            this.returnBox.Size = new System.Drawing.Size(174, 20);
+            this.returnBox.Size = new System.Drawing.Size(176, 20);
             this.returnBox.TabIndex = 2;
             this.returnBox.Text = "LeifGWCalc v1.1";
             this.returnBox.TextChanged += new System.EventHandler(this.returnBox_TextChanged);
@@ -254,17 +262,119 @@
             this.button17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button17.Location = new System.Drawing.Point(121, 146);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(66, 30);
+            this.button17.Size = new System.Drawing.Size(30, 30);
             this.button17.TabIndex = 19;
             this.button17.Text = "0";
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button18
+            // 
+            this.button18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button18.Location = new System.Drawing.Point(157, 146);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(30, 30);
+            this.button18.TabIndex = 20;
+            this.button18.Text = ">";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // button_sin
+            // 
+            this.button_sin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_sin.Location = new System.Drawing.Point(229, 74);
+            this.button_sin.Name = "button_sin";
+            this.button_sin.Size = new System.Drawing.Size(66, 30);
+            this.button_sin.TabIndex = 21;
+            this.button_sin.Text = "Sin";
+            this.button_sin.UseVisualStyleBackColor = true;
+            this.button_sin.Visible = false;
+            this.button_sin.Click += new System.EventHandler(this.button_sin_Click);
+            // 
+            // button_cos
+            // 
+            this.button_cos.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_cos.Location = new System.Drawing.Point(229, 110);
+            this.button_cos.Name = "button_cos";
+            this.button_cos.Size = new System.Drawing.Size(66, 30);
+            this.button_cos.TabIndex = 22;
+            this.button_cos.Text = "Cos";
+            this.button_cos.UseVisualStyleBackColor = true;
+            this.button_cos.Visible = false;
+            this.button_cos.Click += new System.EventHandler(this.button_cos_Click);
+            // 
+            // button_tan
+            // 
+            this.button_tan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_tan.Location = new System.Drawing.Point(229, 146);
+            this.button_tan.Name = "button_tan";
+            this.button_tan.Size = new System.Drawing.Size(66, 30);
+            this.button_tan.TabIndex = 23;
+            this.button_tan.Text = "Tan";
+            this.button_tan.UseVisualStyleBackColor = true;
+            this.button_tan.Visible = false;
+            this.button_tan.Click += new System.EventHandler(this.button_tan_Click);
+            // 
+            // button_leftpar
+            // 
+            this.button_leftpar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_leftpar.Location = new System.Drawing.Point(193, 74);
+            this.button_leftpar.Name = "button_leftpar";
+            this.button_leftpar.Size = new System.Drawing.Size(30, 30);
+            this.button_leftpar.TabIndex = 24;
+            this.button_leftpar.Text = "(";
+            this.button_leftpar.UseVisualStyleBackColor = true;
+            this.button_leftpar.Visible = false;
+            this.button_leftpar.Click += new System.EventHandler(this.button_leftpar_Click);
+            // 
+            // button_rightpar
+            // 
+            this.button_rightpar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_rightpar.Location = new System.Drawing.Point(193, 110);
+            this.button_rightpar.Name = "button_rightpar";
+            this.button_rightpar.Size = new System.Drawing.Size(30, 30);
+            this.button_rightpar.TabIndex = 25;
+            this.button_rightpar.Text = ")";
+            this.button_rightpar.UseVisualStyleBackColor = true;
+            this.button_rightpar.Visible = false;
+            this.button_rightpar.Click += new System.EventHandler(this.button_rightpar_Click);
+            // 
+            // button_power
+            // 
+            this.button_power.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_power.Location = new System.Drawing.Point(193, 146);
+            this.button_power.Name = "button_power";
+            this.button_power.Size = new System.Drawing.Size(30, 30);
+            this.button_power.TabIndex = 26;
+            this.button_power.Text = "^";
+            this.button_power.UseVisualStyleBackColor = true;
+            this.button_power.Visible = false;
+            this.button_power.Click += new System.EventHandler(this.button_power_Click);
+            // 
+            // button_degrees
+            // 
+            this.button_degrees.Location = new System.Drawing.Point(193, 38);
+            this.button_degrees.Name = "button_degrees";
+            this.button_degrees.Size = new System.Drawing.Size(102, 30);
+            this.button_degrees.TabIndex = 27;
+            this.button_degrees.Text = "Degrees";
+            this.button_degrees.UseVisualStyleBackColor = true;
+            this.button_degrees.Visible = false;
+            this.button_degrees.Click += new System.EventHandler(this.button_degrees_Click);
             // 
             // LeifGWCalc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(202, 220);
+            this.Controls.Add(this.button_degrees);
+            this.Controls.Add(this.button_power);
+            this.Controls.Add(this.button_rightpar);
+            this.Controls.Add(this.button_leftpar);
+            this.Controls.Add(this.button_tan);
+            this.Controls.Add(this.button_cos);
+            this.Controls.Add(this.button_sin);
+            this.Controls.Add(this.button18);
             this.Controls.Add(this.button17);
             this.Controls.Add(this.button16);
             this.Controls.Add(this.button15);
@@ -285,10 +395,11 @@
             this.Controls.Add(this.returnBox);
             this.Controls.Add(this.inputBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(218, 298);
+            this.MaximumSize = new System.Drawing.Size(218, 258);
             this.MinimumSize = new System.Drawing.Size(218, 258);
             this.Name = "LeifGWCalc";
             this.Text = "LeifGWCalc";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LeifGWCalc_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -315,6 +426,14 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button_sin;
+        private System.Windows.Forms.Button button_cos;
+        private System.Windows.Forms.Button button_tan;
+        private System.Windows.Forms.Button button_leftpar;
+        private System.Windows.Forms.Button button_rightpar;
+        private System.Windows.Forms.Button button_power;
+        private System.Windows.Forms.Button button_degrees;
     }
 }
 
