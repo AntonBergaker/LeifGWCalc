@@ -42,7 +42,10 @@ namespace WindowsFormsApplication3
                 }
             }
             else
-            { File.WriteAllText(appdata, ""); }
+            {
+                System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc");
+                File.Create(appdata);
+            }
         }
 
         public void inputBox_TextChanged(object sender, EventArgs e)
