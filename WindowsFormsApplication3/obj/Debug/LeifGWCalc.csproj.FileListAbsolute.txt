@@ -79,3 +79,16 @@ D:\Ny mapp\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
 D:\Ny mapp\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application
 D:\Ny mapp\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe
 D:\Ny mapp\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.pdb
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.config
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.pdb
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe.manifest
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.application
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.pdb
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csprojResolveAssemblyReference.cache
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.LeifGWCalc.resources
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.Properties.Resources.resources
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csproj.GenerateResource.Cache
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
+C:\Onödiga Grejer\dev\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application

@@ -616,6 +616,8 @@ namespace WindowsFormsApplication3
         {
             string text = button18.Text + button_degrees.Text;
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc\data.txt";
+            if (!File.Exists(appdata))
+            { File.Create(appdata); }
             File.WriteAllText(appdata, text);
         }
 
