@@ -50,11 +50,13 @@ namespace WindowsFormsApplication3
 
         public void inputBox_TextChanged(object sender, EventArgs e)
         {
+            //clean the input
             NumberFormatInfo provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ".";
             provider.NegativeSign = "-";
-            NumberStyles style = new NumberStyles();
-            style = NumberStyles.Any;
+            provider.NegativeInfinitySymbol = "Infinity";
+            provider.PositiveInfinitySymbol = "Infinity";
+            provider.NumberGroupSeparator = "";
 
             string mathback = "";
             bool repeat = true;
@@ -68,8 +70,6 @@ namespace WindowsFormsApplication3
             maininput = maininput.Replace("x", "*");
             maininput = maininput.Replace(" ", "");
             maininput = maininput.ToLower();
-
-
 
             int parstart;
             int parend;
@@ -97,7 +97,7 @@ namespace WindowsFormsApplication3
                                 }
                             }
                         else //invalid number of ) means error
-                            {
+                        {
                             i = 9999;
                             mathtosend = "error";
                         }
@@ -117,7 +117,7 @@ namespace WindowsFormsApplication3
                     }
                 if (mathtosend != "error" && mathtosend != "Infinity")
                 {
-                    mathback = MathDo(mathtosend);
+                    mathback = MathDo(mathtosend,provider);
                     if (parstart >= 0 && parend >= 0) //if the return stiring was a () do some extra fun
                     {
                         if (parstart >= 3)
@@ -131,17 +131,17 @@ namespace WindowsFormsApplication3
                             //check if it was a sin/tan/cos paranthesis
                             if (maininput[parstart - 3] == 's' && maininput[parstart - 2] == 'i' && maininput[parstart - 1] == 'n') //sin
                             {
-                                mathback = Convert.ToString(Math.Sin(Convert.ToDouble(mathback, provider) * var_modifier));
+                                mathback = Convert.ToString(Math.Sin(Convert.ToDouble(mathback, provider) * var_modifier),provider);
                                 didoperation = true;
                             }
                             else if (maininput[parstart - 3] == 'c' && maininput[parstart - 2] == 'o' && maininput[parstart - 1] == 's') //cos
                             {
-                                mathback = Convert.ToString(Math.Cos(Convert.ToDouble(mathback, provider) * var_modifier));
+                                mathback = Convert.ToString(Math.Cos(Convert.ToDouble(mathback, provider) * var_modifier),provider);
                                 didoperation = true;
                             }
                             else if (maininput[parstart - 3] == 't' && maininput[parstart - 2] == 'a' && maininput[parstart - 1] == 'n') //tan
                             {
-                                mathback = Convert.ToString(Math.Tan(Convert.ToDouble(mathback, provider) * var_modifier));
+                                mathback = Convert.ToString(Math.Tan(Convert.ToDouble(mathback, provider) * var_modifier),provider);
                                 didoperation = true;
                             }
                         if (didoperation == true)
@@ -194,30 +194,26 @@ namespace WindowsFormsApplication3
                 }
             } while (repeat == true);
 
-
             if (mathback == "Infinity" || mathback == "INF") //Give a snarky response if you are mathing too hard.
             { mathback = "Great, you broke it. Think smaller."; }
-            else if (mathback == "error")
+            else if (mathback == "error") //return GW citat
             {
-                mathback = '"' + gwreturn() + '"';
                 returnBox.Height = 20 + 40; //make the box a bit bigger too fit his glory.
                 this.MaximumSize = new Size(this.Width, 258 + 40);
                 this.MinimumSize = new Size(this.Width, 258 + 40);
                 this.Size = new Size(this.Width, 258 + 40);
+                returnBox.Text = '"' + gwreturn() + '"';
             }
             else {
                 returnBox.Height = 20;
                 this.MaximumSize = new Size(this.Width, 258);
                 this.MinimumSize = new Size(this.Width, 258);
                 this.Size = new Size(this.Width, 258);
+                returnBox.Text = Convert.ToString(Convert.ToDouble(mathback, provider)); //Output the only remaining entry with the formatting of the users choice
             }
-            returnBox.Text = mathback; //Output the only remaining entry
         }
-        private string MathDo(string inputstring)
+        private string MathDo(string inputstring, NumberFormatInfo provider)
         {
-            NumberFormatInfo provider = new NumberFormatInfo();
-            provider.NumberDecimalSeparator = ".";
-            provider.NegativeSign = "-";
             NumberStyles style = new NumberStyles();
             style = NumberStyles.Any;
 
@@ -294,47 +290,51 @@ namespace WindowsFormsApplication3
             if (error == false) //if no errors, start counting
             {
 
-                int index;
+                int index, index2;
                 //find the operators in the right order. When an operator is detected run both entries to it's sides with the operator
                 while (entries.Count > 1) //keep doing this until there is only one number remaining
                 {
                     if (entries.Contains("^")) //first look for power off because of the order of operations
                     {
-                        index = entries.FindIndex(item => item == "^"); //find the dividors index
-                        entries[index - 1] = Convert.ToString(Math.Pow(Convert.ToDouble(entries[index - 1], provider), Convert.ToDouble(entries[index + 1], provider))); //perform dividing operation
+                        index = entries.IndexOf("^"); //find the dividors index
+                        entries[index - 1] = Convert.ToString(Math.Pow(Convert.ToDouble(entries[index - 1], provider), Convert.ToDouble(entries[index + 1], provider)),provider); //perform dividing operation
                         entries.RemoveAt(index); //remove the old entries and replace one of the old with this brand new one that has been calculated
                         entries.RemoveAt(index);
                     }
-                    else if (entries.Contains("/")) //do the same for division
+                    else if (entries.Contains("/") || entries.Contains("*")) //find divide or multiply first
                     {
-                        index = entries.FindIndex(item => item == "/");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1],provider) / Convert.ToDouble(entries[index + 1],provider));
+                        index = entries.IndexOf("*");
+                        index2 = entries.IndexOf("/");
+                        
+                        if (index == -1 || (index2>=0 && index2 < index))
+                        {
+                            index = index2;
+                            entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) / Convert.ToDouble(entries[index + 1], provider),provider);
+                        }
+                        else
+                        { entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) * Convert.ToDouble(entries[index + 1], provider),provider); }
+                        
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
-                    else if (entries.Contains("*"))
+                    else if (entries.Contains("+") || entries.Contains("-")) //find add or subtract
                     {
-                        index = entries.FindIndex(item => item == "*");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1],provider) * Convert.ToDouble(entries[index + 1],provider));
-                        entries.RemoveAt(index);
-                        entries.RemoveAt(index);
-                    }
-                    else if (entries.Contains("+"))
-                    {
-                        index = entries.FindIndex(item => item == "+");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) + Convert.ToDouble(entries[index + 1], provider));
-                        entries.RemoveAt(index);
-                        entries.RemoveAt(index);
-                    }
-                    else if (entries.Contains("-"))
-                    {
-                        index = entries.FindIndex(item => item == "-");
-                        entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) - Convert.ToDouble(entries[index + 1], provider));
+                        index = entries.IndexOf("+");
+                        index2 = entries.IndexOf("-");
+                        
+                        if (index == -1 || (index2>=0 && index2 < index)) //if you should do subtract first
+                        {
+                            index = index2;
+                            entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) - Convert.ToDouble(entries[index + 1], provider),provider);
+                        }
+                        else //else add
+                        { entries[index - 1] = Convert.ToString(Convert.ToDouble(entries[index - 1], provider) + Convert.ToDouble(entries[index + 1], provider), provider); }
+                        
                         entries.RemoveAt(index);
                         entries.RemoveAt(index);
                     }
                 }
-                return Convert.ToString(entries[0]);
+                return Convert.ToString(entries[0],provider);
             }
             else
             {
