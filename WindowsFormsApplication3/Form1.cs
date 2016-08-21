@@ -14,19 +14,22 @@ namespace WindowsFormsApplication3
 {
     public partial class LeifGWCalc : Form
     {
-
-        public List<Button> extraButtons = new List<Button>();
+        public Button[] mainButtons;
+        public Button[] extraButtons;
 
         public LeifGWCalc()
         {
             InitializeComponent();
 
-            Button[] buttons = {
+            extraButtons = new Button[] {
                     button_cos, button_sin,  button_tan, button_leftpar, button_leftpar,
-                    button_rightpar, button_power, button_degrees, button_root};
+                    button_rightpar, button_power, button_degrees, button_root
+            };
 
-            foreach (Button a in buttons)
-            { extraButtons.Add(a); }
+            mainButtons = new Button[] {
+                button1,button2,button3,button4,button5,button6,button7,button8,button9,button10,
+                button11,button12,button13,button14,button15,button16,button17
+            };
 
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc\data.txt";
 
@@ -74,11 +77,11 @@ namespace WindowsFormsApplication3
 
             //cleanup invalid signs and replace with valid signs
             mainInput = mainInput.
-            Replace(",",".").
+            ToLower().
+            Replace(",", ".").
             Replace("x", "*").
-            Replace("square root","root").
-            Replace(" ", "").
-            ToLower();
+            Replace("square root", "root").
+            Replace(" ", "");
 
 
             //add extra paranthesis if needed
@@ -476,11 +479,9 @@ namespace WindowsFormsApplication3
         }
 
         private void button_Click(Button button) //when pressing a button, add the buttons text too the equation, and select the window again
-            {
-            inputBox.Text+=button.Text;
-            this.ActiveControl = inputBox;
-            inputBox.Select(inputBox.Text.Length, inputBox.Text.Length);
-            }
+        {
+            button_Click(button.Text);
+        }
         private void button_Click(string addText)
         {
             inputBox.Text += addText;
