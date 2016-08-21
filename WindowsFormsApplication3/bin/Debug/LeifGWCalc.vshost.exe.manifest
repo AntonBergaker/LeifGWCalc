@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LeifGWCalc.exe" size="545792">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LeifGWCalc.exe" size="547328">
       <assemblyIdentity name="LeifGWCalc" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>qbQNhBgrNXGyKAiIsp3wGcd+Iet+1R2o8lu8NYdOJ94=</dsig:DigestValue>
+        <dsig:DigestValue>9+DFAVG9qdFtugRzfCKm5a6WGMJNzREG86lW7dgMXX4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -56,6 +56,7 @@
             this.button_rightpar = new System.Windows.Forms.Button();
             this.button_power = new System.Windows.Forms.Button();
             this.button_degrees = new System.Windows.Forms.Button();
+            this.button_root = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputBox
@@ -353,20 +354,33 @@
             // 
             // button_degrees
             // 
-            this.button_degrees.Location = new System.Drawing.Point(193, 38);
+            this.button_degrees.Location = new System.Drawing.Point(229, 38);
             this.button_degrees.Name = "button_degrees";
-            this.button_degrees.Size = new System.Drawing.Size(102, 30);
+            this.button_degrees.Size = new System.Drawing.Size(66, 30);
             this.button_degrees.TabIndex = 27;
             this.button_degrees.Text = "Degrees";
             this.button_degrees.UseVisualStyleBackColor = true;
             this.button_degrees.Visible = false;
             this.button_degrees.Click += new System.EventHandler(this.button_degrees_Click);
             // 
+            // button_root
+            // 
+            this.button_root.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_root.Location = new System.Drawing.Point(193, 38);
+            this.button_root.Name = "button_root";
+            this.button_root.Size = new System.Drawing.Size(30, 30);
+            this.button_root.TabIndex = 28;
+            this.button_root.Text = "√";
+            this.button_root.UseVisualStyleBackColor = true;
+            this.button_root.Visible = false;
+            this.button_root.Click += new System.EventHandler(this.button_root_Click);
+            // 
             // LeifGWCalc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(202, 220);
+            this.ClientSize = new System.Drawing.Size(202, 219);
+            this.Controls.Add(this.button_root);
             this.Controls.Add(this.button_degrees);
             this.Controls.Add(this.button_power);
             this.Controls.Add(this.button_rightpar);
@@ -434,6 +448,7 @@
         private System.Windows.Forms.Button button_rightpar;
         private System.Windows.Forms.Button button_power;
         private System.Windows.Forms.Button button_degrees;
+        private System.Windows.Forms.Button button_root;
     }
 }
 
