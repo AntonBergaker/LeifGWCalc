@@ -41,233 +41,337 @@ namespace WindowsFormsApplication3
                     if (text[0] == '<')
                     {
                         button18.Text = "<";
-                        this.MaximumSize = new System.Drawing.Size(322, this.Height);
-                        this.Size = new System.Drawing.Size(322, this.Height);
-                        foreach (Button a in extraButtons)
-                        { a.Visible = true; }
+                        currentMode = WindowMode.extended;
+                        UpdateWindow();
                     }
-
+                    else if (text[0] == '>')
+                    {
+                        currentMode = WindowMode.normal;
+                        UpdateWindow();
+                    }
+                    else
+                    {
+                        currentMode = WindowMode.minimal;
+                        UpdateWindow();
+                    }
                     text = text.Remove(0, 1);
                     button_degrees.Text = text;
                 }
             }
             else
             {
+                currentMode = WindowMode.normal;
+                UpdateWindow();
                 System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc");
                 File.Create(appdata);
             }
         }
 
+
+        public enum WindowMode
+        {
+            normal,
+            extended,
+            minimal
+        }
+
+
+        public WindowMode currentMode = WindowMode.normal;
+        public bool hasQuote = false;
+
+        public void UpdateWindow()
+        {
+            resizeBox();
+
+            int height = 20;
+            if (hasQuote)
+            {
+                height += 40;
+            }
+
+            if (currentMode == WindowMode.minimal)
+            {
+                returnBox.Location = new Point(12, 40);
+                returnBox.Height = height;
+            }
+            else
+            {
+                returnBox.Location = new Point(12, 182);
+                returnBox.Height = height;
+            }
+
+            if (currentMode == WindowMode.normal)
+            {
+                foreach (Button a in mainButtons)
+                { a.Visible = true; }
+                foreach (Button a in extraButtons)
+                { a.Visible = false; }
+                button18.Text = ">";
+            }
+
+            else if (currentMode == WindowMode.extended)
+            {
+                foreach (Button a in mainButtons)
+                { a.Visible = true; }
+                foreach (Button a in extraButtons)
+                { a.Visible = true; }
+                button18.Text = "<";
+            }
+            else
+            {
+                foreach (Button a in mainButtons)
+                { a.Visible = false; }
+                foreach (Button a in extraButtons)
+                { a.Visible = false; }
+                button18.Text = "v";
+            }
+        }
+
+        public void resizeBox(int width,int height)
+        {
+            this.MaximumSize = new Size(width, height);
+            this.MinimumSize = new Size(width, height);
+            this.Size        = new Size(width, height);
+        }
+        public void resizeBox()
+        {
+            int height = 0;
+            if (hasQuote)
+            { height += 40; }
+
+            if (currentMode == WindowMode.normal)
+            { resizeBox(218, 251+height); }
+            else if (currentMode == WindowMode.extended)
+            { resizeBox(322, 251+height); }
+            else if (currentMode == WindowMode.minimal)
+            { resizeBox(218, 105+height); }
+        }
+
         public void inputBox_TextChanged(object sender, EventArgs e)
         {
-            //clean the input
-            NumberFormatInfo provider = new NumberFormatInfo();
-            provider.NumberDecimalSeparator = ".";
-            provider.NegativeSign = "-";
-            provider.NegativeInfinitySymbol = "Infinity";
-            provider.PositiveInfinitySymbol = "Infinity";
-            provider.NumberGroupSeparator = "";
-
-            string mathback = "";
-            bool repeat = true;
-
-            string mainInput = (inputBox.Text);
-
-            //clean the input
-
-            //cleanup invalid signs and replace with valid signs
-            mainInput = mainInput.
-            ToLower().
-            Replace(",", ".").
-            Replace("x", "*").
-            Replace("square root", "root").
-            Replace(" ", "");
-
-
-            //add extra paranthesis if needed
-            int paraCount = 0;
-            foreach (char a in mainInput)
+            string testString = inputBox.Text.ToLower();
+            if (testString == "tiny box" || testString == "small box" || testString == "small mode" || testString == "tiny mode" ||
+                testString == "tiny window" || testString == "small window")
             {
-                if (a == ')')
-                { paraCount++; }
-                else if (a == '(')
-                { paraCount--; }
+                inputBox.Text = "";
+                returnBox.Text = "type :\"Big box\" to return";
+                currentMode = WindowMode.minimal;
+                UpdateWindow();
             }
-
-            if (paraCount < 0)
+            else if (testString == "big box" || testString == "normal box" || testString == "big mode" || testString == "normal mode" ||
+                     testString == "big window" || testString == "normal window")
             {
-                for (int i = paraCount; i < 0; i++)
-                { mainInput += ")"; }
+                inputBox.Text = "";
+                returnBox.Text = "type :\"small box\" to return";
+                currentMode = WindowMode.normal;
+                UpdateWindow();
             }
-            else if (paraCount > 0)
+            else
             {
-                for (int i = 0; i < paraCount; i++)
-                { mainInput = "(" + mainInput; }
-            }
+                //clean the input
+                NumberFormatInfo provider = new NumberFormatInfo();
+                provider.NumberDecimalSeparator = ".";
+                provider.NegativeSign = "-";
+                provider.NegativeInfinitySymbol = "Infinity";
+                provider.PositiveInfinitySymbol = "Infinity";
+                provider.NumberGroupSeparator = "";
 
-            int parstart;
-            int parend;
-            string mathtosend;
-            do
-            {
-                //MessageBox.Show(maininput);
-                //find that parenthesis to send to MathDo
-                char[] maininputchar;
-                maininputchar = mainInput.ToCharArray();
-                parstart = -1;
-                parend = -1;
-                mathtosend = "";
+                string mathback = "";
+                bool repeat = true;
 
-                for (int i = 0; maininputchar.Length > i; i++)  { //look for beginning parenthasis
-                    if (maininputchar[i] == '(') //if found set it as active
-                    { parstart = i; }
-                    else if (maininputchar[i] == ')')    { //if a ) is found it mean parenthasis over(duh) but with this setup it will always grab the right one furthest in
-                        if (parstart >= 0)
-                            {
-                            parend = i;
-                            i = 9999;
-                            for (var ii = parstart+1; (ii) <= (parend-1); ii++) //insert the par into the part to send to MathDo
-                                {
-                                mathtosend += maininputchar[ii]; 
-                                }
-                            }
-                        else //invalid number of ) means error
-                        {
-                            i = 9999;
-                            mathtosend = "error";
-                        }
-                    }
-                }
-                if (mathtosend == "") //no paranthesis found or empty string
-                    {
-                        if (parstart == -1 && parend == -1)
-                        {
-                            mathtosend = new string(maininputchar);
-                            repeat = false;
-                        }
-                        else
-                        {
-                            mathtosend = "error"; //honestly this always triggers
-                        }
-                    }
-                if (mathtosend != "error" && mathtosend != "Infinity" && mathtosend != "")
+                string mainInput = (inputBox.Text);
+
+                //clean the input
+
+                //cleanup invalid signs and replace with valid signs
+                mainInput = mainInput.
+                ToLower().
+                Replace(",", ".").
+                Replace("x", "*").
+                Replace("square root", "root").
+                Replace(" ", "");
+
+
+                //add extra paranthesis if needed
+                int paraCount = 0;
+                foreach (char a in mainInput)
                 {
-                    mathback = MathDo(mathtosend,provider);
-                    if ((mathback != "" && mathback != "error" && mathback != "INF" && mathback != "Infinity") && parstart >= 0 && parend >= 0) //if the return stiring was a () do some extra fun
-                    {
-                        if (parstart >= 1)
-                        {
-                            int operatorLength = 1;
-                            bool didoperation = false;
-                            double var_modifier;
-                            if (button_degrees.Text == "Degrees")
-                            { var_modifier = Math.PI / 180; }
-                            else
-                            { var_modifier = 1;}
-                            if (parstart >= 3)
+                    if (a == ')')
+                    { paraCount++; }
+                    else if (a == '(')
+                    { paraCount--; }
+                }
+
+                if (paraCount < 0)
+                {
+                    for (int i = paraCount; i < 0; i++)
+                    { mainInput += ")"; }
+                }
+                else if (paraCount > 0)
+                {
+                    for (int i = 0; i < paraCount; i++)
+                    { mainInput = "(" + mainInput; }
+                }
+
+                int parstart;
+                int parend;
+                string mathtosend;
+                do
+                {
+                    //find that parenthesis to send to MathDo
+                    char[] maininputchar;
+                    maininputchar = mainInput.ToCharArray();
+                    parstart = -1;
+                    parend = -1;
+                    mathtosend = "";
+
+                    for (int i = 0; maininputchar.Length > i; i++)  { //look for beginning parenthasis
+                        if (maininputchar[i] == '(') //if found set it as active
+                        { parstart = i; }
+                        else if (maininputchar[i] == ')')    { //if a ) is found it mean parenthasis over(duh) but with this setup it will always grab the right one furthest in
+                            if (parstart >= 0)
+                                {
+                                parend = i;
+                                i = 9999;
+                                for (var ii = parstart+1; (ii) <= (parend-1); ii++) //insert the par into the part to send to MathDo
+                                    {
+                                    mathtosend += maininputchar[ii]; 
+                                    }
+                                }
+                            else //invalid number of ) means error
                             {
-                                //check if it was a sin/tan/cos/root paranthesis
-                                if (mainInput.Substring(parstart - 3, 3) == "sin")
-                                {
-                                    mathback = Convert.ToString(Math.Sin(Convert.ToDouble(mathback, provider) * var_modifier), provider);
-                                    didoperation = true;
-                                    operatorLength = 3;
-                                }
-                                if (mainInput.Substring(parstart - 3, 3) == "cos")
-                                {
-                                    mathback = Convert.ToString(Math.Cos(Convert.ToDouble(mathback, provider) * var_modifier), provider);
-                                    didoperation = true;
-                                    operatorLength = 3;
-                                }
-                                if (mainInput.Substring(parstart - 3, 3) == "tan")
-                                {
-                                    mathback = Convert.ToString(Math.Tan(Convert.ToDouble(mathback, provider) * var_modifier), provider);
-                                    didoperation = true;
-                                    operatorLength = 3;
-                                }
+                                i = 9999;
+                                mathtosend = "error";
                             }
-                            if (parstart >=4)
+                        }
+                    }
+                    if (mathtosend == "") //no paranthesis found or empty string
+                        {
+                            if (parstart == -1 && parend == -1)
                             {
-                                if (mainInput.Substring(parstart - 4, 4) == "root")
+                                mathtosend = new string(maininputchar);
+                                repeat = false;
+                            }
+                            else
+                            {
+                                mathtosend = "error"; //honestly this always triggers
+                            }
+                        }
+                    if (mathtosend != "error" && mathtosend != "Infinity" && mathtosend != "")
+                    {
+                        mathback = MathDo(mathtosend,provider); //do math
+                        if ((mathback != "" && mathback != "error" && mathback != "INF" && mathback != "Infinity") && parstart >= 0 && parend >= 0) //if the return stiring was a () do some extra fun
+                        {
+                            if (parstart >= 1)
+                            {
+                                int operatorLength = 1;
+                                bool didoperation = false;
+                                double var_modifier;
+                                if (button_degrees.Text == "Degrees")
+                                { var_modifier = Math.PI / 180; }
+                                else
+                                { var_modifier = 1;}
+                                if (parstart >= 3)
+                                {
+                                    //check if it was a sin/tan/cos/root paranthesis
+                                    if (mainInput.Substring(parstart - 3, 3) == "sin")
+                                    {
+                                        mathback = Convert.ToString(Math.Sin(Convert.ToDouble(mathback, provider) * var_modifier), provider);
+                                        didoperation = true;
+                                        operatorLength = 3;
+                                    }
+                                    if (mainInput.Substring(parstart - 3, 3) == "cos")
+                                    {
+                                        mathback = Convert.ToString(Math.Cos(Convert.ToDouble(mathback, provider) * var_modifier), provider);
+                                        didoperation = true;
+                                        operatorLength = 3;
+                                    }
+                                    if (mainInput.Substring(parstart - 3, 3) == "tan")
+                                    {
+                                        mathback = Convert.ToString(Math.Tan(Convert.ToDouble(mathback, provider) * var_modifier), provider);
+                                        didoperation = true;
+                                        operatorLength = 3;
+                                    }
+                                }
+                                if (parstart >=4)
+                                {
+                                    if (mainInput.Substring(parstart - 4, 4) == "root")
+                                    {
+                                        mathback = Convert.ToString(Math.Sqrt(Convert.ToDouble(mathback, provider)), provider);
+                                        didoperation = true;
+                                        operatorLength = 4;
+                                    }
+                                }
+                                if (mainInput.Substring(parstart-1,1) == "√")
                                 {
                                     mathback = Convert.ToString(Math.Sqrt(Convert.ToDouble(mathback, provider)), provider);
                                     didoperation = true;
-                                    operatorLength = 4;
+                                    operatorLength = 1;
                                 }
-                            }
-                            if (mainInput.Substring(parstart-1,1) == "√")
-                            {
-                                mathback = Convert.ToString(Math.Sqrt(Convert.ToDouble(mathback, provider)), provider);
-                                didoperation = true;
-                                operatorLength = 1;
-                            }
 
-                        if (didoperation == true)
-                        {
-                            if (parstart >= operatorLength+1)
+                            if (didoperation == true)
                             {
-                                if (isnumber(mainInput[parstart-4]) == true)
+                                if (parstart >= operatorLength+1)
                                 {
-                                    mainInput = mainInput.Insert(parstart - operatorLength, "*");
-                                    parend++;
-                                    parstart++;
+                                    if (isnumber(mainInput[parstart-operatorLength]) == true)
+                                    {
+                                        mainInput = mainInput.Insert(parstart - operatorLength, "*");
+                                        parend++;
+                                        parstart++;
+                                    }
+                                }
+
+                                parstart -= operatorLength;
                                 }
                             }
-
-                            parstart -= operatorLength;
+                            if (parend >= 0 && parend < (mainInput.Length-1)) //if operation was done with )( aka multiplication with paranthesis
+                            {
+                                if (mainInput[parend + 1] == '(')
+                                {
+                                    mainInput = mainInput.Insert(parend+1, "*");
+                                }
+                                else if (isnumber(mainInput[parend + 1]) == true)
+                                {
+                                    mainInput = mainInput.Insert(parend + 1, "*");
+                                }
                             }
+                            if (parstart >= 1)
+                            {
+                                if (isnumber(mainInput[parstart - 1]) == true)
+                                {
+                                    mainInput = mainInput.Insert(parstart, "*");
+                                    parstart++;
+                                    parend++;
+                                }
+                            }
+                            mainInput = mainInput.Remove(parstart, 1+parend-parstart);
+                            mainInput = mainInput.Insert(parstart, mathback);
                         }
-                        if (parend >= 0 && parend < (mainInput.Length-1)) //if operation was done with )( aka multiplication with paranthesis
+                        else
                         {
-                            if (mainInput[parend + 1] == '(')
-                            {
-                                mainInput = mainInput.Insert(parend+1, "*");
-                            }
-                            else if (isnumber(mainInput[parend + 1]) == true)
-                            {
-                                mainInput = mainInput.Insert(parend + 1, "*");
-                            }
+                            mainInput = mathback;
+                            repeat = false;
                         }
-                        if (parstart >= 1)
-                        {
-                            if (isnumber(mainInput[parstart - 1]) == true)
-                            {
-                                mainInput = mainInput.Insert(parstart, "*");
-                                parstart++;
-                                parend++;
-                            }
-                        }
-                        mainInput = mainInput.Remove(parstart, 1+parend-parstart);
-                        mainInput = mainInput.Insert(parstart, mathback);
                     }
-                    else
-                    {
-                        mainInput = mathback;
+                    else  {
+                        mathback = mathtosend;
                         repeat = false;
                     }
-                }
-                else  {
-                    mathback = mathtosend;
-                    repeat = false;
-                }
-            } while (repeat == true);
+                } while (repeat == true);
 
-            if (mathback == "Infinity" || mathback == "INF") //Give a snarky response if you are mathing too hard.
-            { mathback = "Great, you broke it. Think smaller."; }
-            else if (mathback == "error" || mathback == "") //return GW citat
-            {
-                returnBox.Height = 20 + 40; //make the box a bit bigger too fit his glory.
-                this.MaximumSize = new Size(this.Width, 258 + 40);
-                this.MinimumSize = new Size(this.Width, 258 + 40);
-                this.Size = new Size(this.Width, 258 + 40);
-                returnBox.Text = '"' + gwreturn() + '"';
-            }
-            else {
-                returnBox.Height = 20;
-                this.MaximumSize = new Size(this.Width, 258);
-                this.MinimumSize = new Size(this.Width, 258);
-                this.Size = new Size(this.Width, 258);
-                returnBox.Text = Convert.ToString(Convert.ToDouble(mathback, provider)); //Output the only remaining entry with the formatting of the users choice
+                if (mathback == "Infinity" || mathback == "INF") //Give a snarky response if you are mathing too hard.
+                { mathback = "Great, you broke it. Think smaller."; }
+                else if (mathback == "error" || mathback == "") //return GW citat
+                {
+                    hasQuote = true;
+                    resizeBox();
+                    returnBox.Text = '"' + gwreturn() + '"';
+                }
+                else {
+                    hasQuote = false;
+                    resizeBox();
+                    returnBox.Text = Convert.ToString(Convert.ToDouble(mathback, provider)); //Output the only remaining entry with the formatting of the users choice
+                }
             }
         }
         private string MathDo(string inputstring, NumberFormatInfo provider)
@@ -603,20 +707,14 @@ namespace WindowsFormsApplication3
         {
             if (button18.Text == "<")
             {
-                button18.Text = ">";
-                this.MaximumSize = new System.Drawing.Size(218, this.Height);
-                this.Size = new System.Drawing.Size(218, this.Height);
-                foreach (Button a in extraButtons)
-                { a.Visible = false; }
+                currentMode = WindowMode.normal;
             }
-            else
+            else if (button18.Text == ">")
             {
-                button18.Text = "<";
-                this.MaximumSize = new System.Drawing.Size(322, this.Height);
-                this.Size = new System.Drawing.Size(322, this.Height);
-                foreach (Button a in extraButtons)
-                { a.Visible = true; }
+                currentMode = WindowMode.extended;
             }
+            UpdateWindow();
+            
         }
 
         private void button_sin_Click(object sender, EventArgs e)

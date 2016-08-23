@@ -71,14 +71,15 @@
             // 
             // returnBox
             // 
-            this.returnBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.returnBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.returnBox.Location = new System.Drawing.Point(13, 188);
+            this.returnBox.Location = new System.Drawing.Point(12, 182);
             this.returnBox.MaximumSize = new System.Drawing.Size(400, 60);
             this.returnBox.Multiline = true;
             this.returnBox.Name = "returnBox";
             this.returnBox.ReadOnly = true;
-            this.returnBox.Size = new System.Drawing.Size(176, 20);
+            this.returnBox.Size = new System.Drawing.Size(177, 20);
             this.returnBox.TabIndex = 2;
             this.returnBox.Text = "LeifGWCalc v1.1";
             this.returnBox.TextChanged += new System.EventHandler(this.returnBox_TextChanged);
@@ -250,6 +251,7 @@
             // 
             // button16
             // 
+            this.button16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.button16.Location = new System.Drawing.Point(121, 38);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(66, 30);
@@ -282,7 +284,7 @@
             // 
             // button_sin
             // 
-            this.button_sin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_sin.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.button_sin.Location = new System.Drawing.Point(229, 74);
             this.button_sin.Name = "button_sin";
             this.button_sin.Size = new System.Drawing.Size(66, 30);
@@ -294,7 +296,7 @@
             // 
             // button_cos
             // 
-            this.button_cos.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_cos.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.button_cos.Location = new System.Drawing.Point(229, 110);
             this.button_cos.Name = "button_cos";
             this.button_cos.Size = new System.Drawing.Size(66, 30);
@@ -306,7 +308,7 @@
             // 
             // button_tan
             // 
-            this.button_tan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_tan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.button_tan.Location = new System.Drawing.Point(229, 146);
             this.button_tan.Name = "button_tan";
             this.button_tan.Size = new System.Drawing.Size(66, 30);
@@ -354,6 +356,7 @@
             // 
             // button_degrees
             // 
+            this.button_degrees.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.button_degrees.Location = new System.Drawing.Point(229, 38);
             this.button_degrees.Name = "button_degrees";
             this.button_degrees.Size = new System.Drawing.Size(66, 30);
@@ -379,7 +382,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(202, 219);
+            this.ClientSize = new System.Drawing.Size(202, 212);
             this.Controls.Add(this.button_root);
             this.Controls.Add(this.button_degrees);
             this.Controls.Add(this.button_power);
@@ -409,8 +412,7 @@
             this.Controls.Add(this.returnBox);
             this.Controls.Add(this.inputBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(218, 258);
-            this.MinimumSize = new System.Drawing.Size(218, 258);
+            this.MinimumSize = new System.Drawing.Size(16, 39);
             this.Name = "LeifGWCalc";
             this.Text = "LeifGWCalc";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LeifGWCalc_FormClosing);
