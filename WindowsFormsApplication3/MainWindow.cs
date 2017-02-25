@@ -1,17 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using LeifGWCalc;
 
-namespace WindowsFormsApplication3
+namespace LeifGWCalc
 {
     public partial class LeifGWCalc : Form
     {
@@ -32,38 +23,25 @@ namespace WindowsFormsApplication3
                 button11,button12,button13,button14,button15,button16,button17
             };
 
-            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc\data.txt";
-
-            if (File.Exists(appdata))
+            string text = (string)Properties.Settings.Default["WindowMode"];
+            if (text == "<")
             {
-                string text = File.ReadAllText(appdata);
-                if (text != "")
-                {
-                    if (text[0] == '<')
-                    {
-                        button18.Text = "<";
-                        currentMode = WindowMode.extended;
-                        UpdateWindow();
-                    }
-                    else if (text[0] == '>')
-                    {
-                        currentMode = WindowMode.normal;
-                        UpdateWindow();
-                    }
-                    else
-                    {
-                        currentMode = WindowMode.minimal;
-                        UpdateWindow();
-                    }
-                    text = text.Remove(0, 1);
-                    button_degrees.Text = text;
-                }
+                button18.Text = "<";
+                currentMode = WindowMode.extended;
+                UpdateWindow();
             }
-            else
+            else if (text == ">")
             {
                 currentMode = WindowMode.normal;
                 UpdateWindow();
             }
+            else
+            {
+                currentMode = WindowMode.minimal;
+                UpdateWindow();
+            }
+
+            button_degrees.Text = (string)Properties.Settings.Default["AngleMode"];
         }
 
 
@@ -124,6 +102,9 @@ namespace WindowsFormsApplication3
                 { a.Visible = false; }
                 button18.Text = "v";
             }
+
+            Properties.Settings.Default["WindowMode"] = button18.Text;
+            Properties.Settings.Default.Save();
         }
 
         public void resizeBox(int width,int height)
@@ -172,7 +153,7 @@ namespace WindowsFormsApplication3
                 {
                     hasQuote = true;
                     resizeBox();
-                    returnBox.Text = '"' + gwreturn() + '"';
+                    returnBox.Text = '"' + GetGWQuote() + '"';
                 }
                 else
                 {
@@ -183,82 +164,36 @@ namespace WindowsFormsApplication3
             }
         }
 
-        private string gwreturn()
+        private string GetGWQuote()
         {
             //enter citat from our lord and saviour Leif Gw Persson if there is an error.
-            Random rnd1 = new Random();
-            int random = rnd1.Next(0, 21);
-            string citat = "";
-            switch (random)
-            {
-                case 0:
-                    citat = "Mitt yngsta barnbarn är rödfnasigt och ser ut some en ung Winston Churchhill. Minus cigarren.";
-                    break;
-                case 1:
-                    citat = "Du har väldigt bastanta små händer. Har du tänkt på det?";
-                    break;
-                case 2:
-                    citat = "Till skillnad från dig så har jag faktiskt gått igenom de där handlingarna, så jag är inte lika imponerad.";
-                    break;
-                case 3:
-                    citat = "Det finns riktigt bra hembränt på några ställen och det brukar jag då inte tacka nej till.";
-                    break;
-                case 4:
-                    citat = "Jakt är en jävla udda sysselsättning - att hålla på och skjuta på djur. Ett utmärkt sätt att förhärda en människa på.";
-                    break;
-                case 5:
-                    citat = "Det är inte bra att ge kommunisterna allt de pekar på.";
-                    break;
-                case 6:
-                    citat = "Jag går på krogen och får massa idéer. Ju fullare desto bättre idéer.";
-                    break;
-                case 7:
-                    citat = "Det är ganska trevligt att vara populär.";
-                    break;
-                case 8:
-                    citat = "Jag betalar åtminstånde ett par daghem varje år på mina skatter.";
-                    break;
-                case 9:
-                    citat = "En gång var det en tomte som gjorde en ändring utan att fråga. Honom blev jag galen på.";
-                    break;
-                case 10:
-                    citat = "Om jag äter sill kan jag ta en öl. Men bara några klunkar för att skölja ner vodkan.";
-                    break;
-                case 11:
-                    citat = "Andra författare väljer platser där de själva har bott. De lata jävlarna. De behöver inte göra sin research.";
-                    break;
-                case 12:
-                    citat = "Jag hade fel om Fridolin.";
-                    break;
-                case 13:
-                    citat = "Polisens mordvapenarkiv, det är ett sånt ställe jag skulle kunna åldras och då på.";
-                    break;
-                case 14:
-                    citat = "Mamma tog mina aktier.";
-                    break;
-                case 15:
-                    citat = "Paradise Hotel. Det är ett antal ungdomspsykopater som för säkerhets skull är på fyllan.";
-                    break;
-                case 16:
-                    citat ="Jag är ju ganska gammal och behöver tid att tänka. Så jag har den här framtoningen för att ge mig själv mer tid";
-                    break;
-                case 17:
-                    citat = "Ge barnen pengar och säg åt dem att inte dränka sig själva.";
-                    break;
-                case 18:
-                    citat = "Normalt hoppar jag omkring. Men då är jag noga med att bara mina närmaste kan se mig.";
-                    break;
-                case 19:
-                    citat = "Jag vet inte varför mina böcker säljer så dåligt i Norge. För lite bilder eller för små bokstäver kanske.";
-                    break;
-                case 20:
-                    citat = "Om jag har blivit inbjuden till Nobelfesten? Ja, men jag tror inte jag har svarat. Den där inbjudan ligger någonstans.";
-                    break;
-                case 21:
-                    citat = "Jag har kallat folk för massa fula saker. Men inget som jag ångrar direkt, det vill jag inte påstå.";
-                    break;
-            }
-            return citat;
+            Random random = new Random();
+            string[] quotes = new string[] {
+                "Mitt yngsta barnbarn är rödfnasigt och ser ut some en ung Winston Churchhill. Minus cigarren.",
+                "Du har väldigt bastanta små händer. Har du tänkt på det?",
+                "Till skillnad från dig så har jag faktiskt gått igenom de där handlingarna, så jag är inte lika imponerad.",
+                "Det finns riktigt bra hembränt på några ställen och det brukar jag då inte tacka nej till.",
+                "Jakt är en jävla udda sysselsättning - att hålla på och skjuta på djur. Ett utmärkt sätt att förhärda en människa på.",
+                "Det är inte bra att ge kommunisterna allt de pekar på.",
+                "Jag går på krogen och får massa idéer. Ju fullare desto bättre idéer.",
+                "Det är ganska trevligt att vara populär.",
+                "Jag betalar åtminstånde ett par daghem varje år på mina skatter.",
+                "En gång var det en tomte som gjorde en ändring utan att fråga. Honom blev jag galen på.",
+                "Om jag äter sill kan jag ta en öl. Men bara några klunkar för att skölja ner vodkan.",
+                "Andra författare väljer platser där de själva har bott. De lata jävlarna. De behöver inte göra sin research.",
+                "Jag hade fel om Fridolin.",
+                "Polisens mordvapenarkiv, det är ett sånt ställe jag skulle kunna åldras och då på.",
+                "Mamma tog mina aktier.",
+                "Paradise Hotel. Det är ett antal ungdomspsykopater som för säkerhets skull är på fyllan.",
+                "Jag är ju ganska gammal och behöver tid att tänka. Så jag har den här framtoningen för att ge mig själv mer tid",
+                "Ge barnen pengar och säg åt dem att inte dränka sig själva.",
+                "Normalt hoppar jag omkring. Men då är jag noga med att bara mina närmaste kan se mig.",
+                "Jag vet inte varför mina böcker säljer så dåligt i Norge. För lite bilder eller för små bokstäver kanske.",
+                "Om jag har blivit inbjuden till Nobelfesten? Ja, men jag tror inte jag har svarat. Den där inbjudan ligger någonstans.",
+                "Jag har kallat folk för massa fula saker. Men inget som jag ångrar direkt, det vill jag inte påstå."
+            };
+            return (quotes[random.Next(0,quotes.Length)]);
+
         }
 
         private void button_Click(Button button) //when pressing a button, add the buttons text too the equation, and select the window again
@@ -311,14 +246,9 @@ namespace WindowsFormsApplication3
             else
             { button_degrees.Text = "Degrees"; }
             inputBox_TextChanged(inputBox,e);
-        }
 
-        private void LeifGWCalc_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            string text = button18.Text + button_degrees.Text;
-            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\LeifGwCalc\data.txt";
-            File.WriteAllText(appdata, text);
+            Properties.Settings.Default["AngleMode"] = button_degrees.Text;
+            Properties.Settings.Default.Save();
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication3
+﻿namespace LeifGWCalc
 {
     partial class LeifGWCalc
     {
@@ -81,7 +81,7 @@
             this.returnBox.ReadOnly = true;
             this.returnBox.Size = new System.Drawing.Size(177, 20);
             this.returnBox.TabIndex = 2;
-            this.returnBox.Text = "LeifGWCalc v1.1";
+            this.returnBox.Text = "LeifGWCalc v1.2";
             // 
             // button1
             // 
@@ -414,7 +414,6 @@
             this.MinimumSize = new System.Drawing.Size(16, 39);
             this.Name = "LeifGWCalc";
             this.Text = "LeifGWCalc";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LeifGWCalc_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

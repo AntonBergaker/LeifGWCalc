@@ -43,24 +43,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LeifGWCalc.exe" size="547840">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LeifGWCalc.exe" size="547328">
       <assemblyIdentity name="LeifGWCalc" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>IdWtUKmk0nAwAO5OV11lvcyfq+lEITCun1XdplHXcqY=</dsig:DigestValue>
+        <dsig:DigestValue>zGBkBbZtdSvVOhzwBGZ+p1u0rpmITPO69mvhdvy7qeY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="LeifGWCalc.exe.config" size="187">
+  <file name="LeifGWCalc.exe.config" size="1051">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>xm4bo26HQ0LNVwz1vdPYtzhkpMnp2AI5i+f0b+OahTI=</dsig:DigestValue>
+      <dsig:DigestValue>3cnXC/hfpXP3jEXhp+PNUL3IPRO+VHqTgM9gQqBMrRg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="ProgramIcon.ico" size="259598">

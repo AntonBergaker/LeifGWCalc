@@ -100,8 +100,8 @@ D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCal
 D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.exe
 D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\bin\Debug\LeifGWCalc.pdb
 D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csprojResolveAssemblyReference.cache
-D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.LeifGWCalc.resources
 D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.Properties.Resources.resources
 D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.csproj.GenerateResource.Cache
 D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.exe.manifest
 D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.application
+D:\OnodigaGrejer\devshit\LeifGWCalc\WindowsFormsApplication3\obj\Debug\LeifGWCalc.LeifGWCalc.resources
