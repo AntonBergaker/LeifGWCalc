@@ -8,7 +8,7 @@ namespace LeifGWCalc
     {
         public static string Calculate(string input, bool degrees)
         {
-            input = input.ToLower();
+            input = input.ToLower().Replace(" ","");
 
             ValueSequence numbers = new ValueSequence(input);
 
@@ -29,6 +29,7 @@ namespace LeifGWCalc
             List<Value> values = numbers.values;
 
             values = ExecuteParenthesis(values, useDegrees);
+            values = ReplaceConstants(values);
             values = ExecuteRightOperators(values, new string[] { "sin", "cos", "tan", "root", "√" }, useDegrees);
             values = ExecuteBothOperators( values, new string[] { "^"});
             values = ExecuteBothOperators( values, new string[] { "*", "x", "/" });
@@ -36,6 +37,27 @@ namespace LeifGWCalc
             values = MultiplyAllValues(values);
 
             return numbers;
+        }
+
+        private static List<Value> ReplaceConstants(List<Value> values)
+        {
+            Dictionary<string, double> Constants = new Dictionary<string, double>();
+            Constants.Add("pi", Math.PI);
+            Constants.Add("π", Math.PI);
+            Constants.Add("e", Math.E);
+
+            foreach (Value v in values)
+            {
+                if (v.type == ValueTypes.Operator)
+                { if (Constants.ContainsKey(v.operation))
+                    {
+                        v.type = ValueTypes.Value;
+                        v.value = Constants[v.operation];
+                    }
+                }
+            }
+
+            return values;
         }
 
 
