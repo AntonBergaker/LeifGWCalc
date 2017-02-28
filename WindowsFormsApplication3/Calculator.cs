@@ -30,7 +30,9 @@ namespace LeifGWCalc
 
             values = ExecuteParenthesis(values, useDegrees);
             values = ReplaceConstants(values);
-            values = ExecuteRightOperators(values, new string[] { "sin", "cos", "tan", "root", "√" }, useDegrees);
+            values = ExecuteLeftOperators( values, new string[] { "!" });
+            values = ExecuteRightOperators(values, new string[] { "sin", "cos", "tan", "root", "√", "log", "lg", "ln", "round", "floor", "ceil" }, useDegrees);
+            values = ExecuteBothOperators( values, new string[] { "mod" });
             values = ExecuteBothOperators( values, new string[] { "^"});
             values = ExecuteBothOperators( values, new string[] { "*", "x", "/" });
             values = ExecuteBothOperators( values, new string[] { "+", "-"});
@@ -143,6 +145,28 @@ namespace LeifGWCalc
             return values;
         }
 
+        private static List<Value> ExecuteLeftOperators(List<Value> values, string[] operators)
+        {
+            for (int i = 1; i < values.Count; i++)
+            {
+                if (values[i].type == ValueTypes.Operator)
+                {
+                    if (operators.Contains(values[i].operation))
+                    {
+                        Value val1 = values[i - 1];
+                        if (val1.type == ValueTypes.Value)
+                        {
+                            Value newVal = ExecuteMath(val1, values[i], null);
+                            values.RemoveRange(i-1, 2);
+                            values.Insert(i-1, newVal);
+                            i -= 1;
+                        }
+                    }
+                }
+            }
+            return values;
+        }
+
         private static Value ExecuteMath(Value number1, Value operation, Value number2, bool useDegrees = true)
         {
             double vf = 0d;
@@ -188,6 +212,32 @@ namespace LeifGWCalc
                 case "root":
                 case "√":
                     vf = Math.Sqrt(v2);
+                    break;
+                case "log":
+                case "lg":
+                    vf = Math.Log10(v2);
+                    break;
+                case "ln":
+                case "logn":
+                    vf = Math.Log(v2);
+                    break;
+                case "!":
+                    //TODO decimal factorial
+                    vf = 1;
+                    while (v1>1)
+                    { vf *= v1--; }
+                    break;
+                case "round":
+                    vf = Math.Round(v2);
+                    break;
+                case "ceil":
+                    vf = Math.Ceiling(v2);
+                    break;
+                case "floor":
+                    vf = Math.Floor(v2);
+                    break;
+                case "mod":
+                    vf = v1 % v2;
                     break;
             }
 

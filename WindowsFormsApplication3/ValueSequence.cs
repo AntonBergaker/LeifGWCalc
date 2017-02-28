@@ -24,7 +24,7 @@ namespace LeifGWCalc
         public ValueSequence(string input)
         {
             state = ValueSequenceState.Ok;
-            string[] operators = new string[] { "sin", "cos", "root", "+", "-", "^", "/", "*", "x", "√", "(", ")", "pi", "e", "π" };
+            string[] operators = new string[] { "sin", "cos", "root", "+", "-", "^", "/", "*", "x", "√", "(", ")", "pi", "e", "π", "ln", "logn", "log", "lg", "!" , "round", "floor", "ceil", "mod"};
 
             values = new List<Value>();
             string[] seperated = SplitKeepDelimiters(input, operators);
