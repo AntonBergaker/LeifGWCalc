@@ -24,7 +24,7 @@ namespace LeifGWCalc
         public ValueSequence(string input)
         {
             state = ValueSequenceState.Ok;
-            string[] operators = new string[] { "sin", "cos", "root", "+", "-", "^", "/", "*", "x", "√", "(", ")", "pi", "e", "π", "ln", "logn", "log", "lg", "!" , "round", "floor", "ceil", "mod"};
+            string[] operators = new string[] {"arcs", "arcc", "arct", "sin", "cos", "tan",  "root", "+", "-", "^", "/", "*", "x", "√", "(", ")", "pi", "e", "π", "ln", "logn", "log", "lg", "!" , "round", "floor", "ceil", "mod"};
 
             values = new List<Value>();
             string[] seperated = SplitKeepDelimiters(input, operators);
@@ -132,11 +132,12 @@ namespace LeifGWCalc
             List<Value> values = new List<Value>();
             foreach (string s in array)
             {
+                //if the value is an operator
                 if (operators.Contains(s))
                 {
                     values.Add(new Value(s));
                 }
-                else
+                else //else try to parse it as a number
                 {
                     double d;
                     bool success = Double.TryParse(s, out d);

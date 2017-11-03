@@ -31,7 +31,7 @@ namespace LeifGWCalc
             values = ExecuteParenthesis(values, useDegrees);
             values = ReplaceConstants(values);
             values = ExecuteLeftOperators( values, new string[] { "!" });
-            values = ExecuteRightOperators(values, new string[] { "sin", "cos", "tan", "root", "√", "log", "lg", "ln", "round", "floor", "ceil" }, useDegrees);
+            values = ExecuteRightOperators(values, new string[] { "sin", "cos", "tan", "arcs", "arcc", "arct", "root", "√", "log", "lg", "ln", "round", "floor", "ceil" }, useDegrees);
             values = ExecuteBothOperators( values, new string[] { "mod" });
             values = ExecuteBothOperators( values, new string[] { "^"});
             values = ExecuteBothOperators( values, new string[] { "*", "x", "/" });
@@ -208,6 +208,21 @@ namespace LeifGWCalc
                     if (useDegrees)
                     { v2 = Math.PI * v2 / 180.0; }
                     vf = Math.Tan(v2);
+                    break;
+                case "arcs":
+                    vf = Math.Asin(v2);
+                    if (useDegrees)
+                    { vf = vf * 180.0 / Math.PI; }
+                    break;
+                case "arcc":
+                    vf = Math.Acos(v2);
+                    if (useDegrees)
+                    { vf = vf * 180.0 / Math.PI; }
+                    break;
+                case "arct":
+                    vf = Math.Atan(v2);
+                    if (useDegrees)
+                    { vf = vf * 180.0 / Math.PI; }
                     break;
                 case "root":
                 case "√":
