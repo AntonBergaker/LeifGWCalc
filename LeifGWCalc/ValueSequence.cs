@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace LeifGWCalc
 {
@@ -24,7 +25,7 @@ namespace LeifGWCalc
         public ValueSequence(string input)
         {
             state = ValueSequenceState.Ok;
-            string[] operators = new string[] {"arcs", "arcc", "arct", "sin", "cos", "tan",  "root", "+", "-", "^", "/", "*", "x", "√", "(", ")", "pi", "e", "π", "ln", "logn", "log", "lg", "!" , "round", "floor", "ceil", "mod"};
+            string[] operators = new string[] {"arcs", "arcc", "arct", "sin", "cos", "tan",  "root", "+", "-", "^", "/", "*", "x", "√", "(", ")", "pi", "e", "π", "ln", "logn", "log", "lg", "!" , "round", "floor", "ceil", "mod", "gorthan", ">", "<", "lorthan", "==", "notqual", "||", "&&", "tru", "fals"};
 
             values = new List<Value>();
             string[] seperated = SplitKeepDelimiters(input, operators);
@@ -162,18 +163,18 @@ namespace LeifGWCalc
         private string[] SplitKeepDelimiters(string input, string[] delimiters)
         {
             foreach (string s in delimiters)
-            { input = input.Replace(s, "|vs|" + s + "|vs|"); }
-            return input.Split(new string[] { "|vs|" },StringSplitOptions.RemoveEmptyEntries);
+            { input = input.Replace(s, "b|vs|d" + s + "b|vs|d"); }
+            return input.Split(new string[] { "b|vs|d" },StringSplitOptions.RemoveEmptyEntries);
         }
 
         public override string ToString()
         {
-            string s = "";
+            StringBuilder s = new StringBuilder();
             foreach (Value v in values)
             {
-                s += v.ToString();
+                s.Append( v.ToString());
             }
-            return s;
+            return s.ToString();
         }
     }
 }

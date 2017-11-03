@@ -2,12 +2,14 @@
 
 namespace LeifGWCalc
 {
-    enum ValueTypes { Operator, Value, ValueSequence}
+    enum ValueTypes { Operator, Value, ValueSequence, Bool}
     class Value
     {
         public ValueTypes type;
         public double value;
+        public bool boolean;
         public string operation;
+        public bool invert = false;
         public ValueSequence sequence;
 
         public Value(double value)
@@ -25,6 +27,11 @@ namespace LeifGWCalc
             this.sequence = sequence;
             type = ValueTypes.ValueSequence;
         }
+        public Value(bool boolean)
+        {
+            this.boolean = boolean;
+            type = ValueTypes.Bool;
+        }
 
         public override string ToString()
         {
@@ -34,6 +41,8 @@ namespace LeifGWCalc
                     return operation;
                 case ValueTypes.ValueSequence:
                     return "("+sequence.ToString()+")";
+                case ValueTypes.Bool:
+                    return boolean ? "True" : "False";
                 default:
                     return Convert.ToString(value);
             }
